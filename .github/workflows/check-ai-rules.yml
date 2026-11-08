@@ -1,0 +1,28 @@
+# Fails if any CS 361 AI rule file was changed or deleted.
+# If the instructor updates a rule file, recompute its hash with:  sha256sum <file>
+name: Check AI rule files
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify AI rule files are unchanged
+        run: |
+          cat > expected.sha256 <<'EOF'
+          bc86b1c84935560e1634abf96d425177876e3e9cc06cbb6f602008d37ad04254  write.md
+          4102f75a512dd73d8c89b75ce79b009d919243d13947dbb43af600d08f800760  .github/copilot-instructions.md
+          acde8f9271730dd6df99aba70f4b556301a2a870bded78cdb2a331bf24f0d5b8  .github/instructions/student-logic.instructions.md
+          EOF
+          sed -i 's/^ *//' expected.sha256
+          if sha256sum -c expected.sha256; then
+            echo "All AI rule files are unchanged."
+          else
+            echo "::error::An AI rule file (write.md or a file that points to it) was changed or deleted. Restore it from the starter repo."
+            exit 1
+          fi
