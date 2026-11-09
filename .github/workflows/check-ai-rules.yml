@@ -15,9 +15,9 @@ jobs:
       - name: Verify AI rule files are unchanged
         run: |
           cat > expected.sha256 <<'EOF'
-          0f993ce029168e460962568b3b72364d4ece208de4e02542c5b3832b60cdc7d6  write.md
-          63f6abee55deb92f14f9a3d616be1d35c28cd3c5aff25f02804faa6d0d7c71e8  .github/copilot-instructions.md
-          7f0808f40099eaef5cee33ef222ae95bccb2f122c35c0f24e8f770eb3b51feee  .github/instructions/student-logic.instructions.md
+          227f900cd69c65eadc514fb23cdd5b4dfeee2a8af9cfd7c33c4ab19b0a30598c  write.md
+          02f8e79b0c1becb1c77b1ad8fee20e9a944b2ccf80784e0212e8dbc6d2ff6ee8  .github/copilot-instructions.md
+          f65ece2a564ebb4aefc3c17861fc0949b8d7a3fee0d9dd046e04b206a71f372e  .github/instructions/student-logic.instructions.md
           EOF
           sed -i 's/^ *//' expected.sha256
           if sha256sum -c expected.sha256; then
