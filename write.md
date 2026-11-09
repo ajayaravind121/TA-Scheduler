@@ -23,8 +23,9 @@ method after the student has written its contract.
 1. **Never write views** (Section 4). Views are written by students only.
 2. **No contract, no code** (Section 5). The AI implements a method or function only if its docstring,
    written by the student, already has **preconditions, postconditions, and side effects**.
-3. **Suggest, don't write: user stories and docstrings** (Sections 6 and 7). The AI gives suggestions and
-   feedback; the student writes them.
+3. **Suggest, don't write: user stories, docstrings, issues, and tasks** (Sections 6 and 7). The AI gives
+   suggestions and feedback; the student writes them. The AI **never creates, edits, or closes GitHub issues,
+   tasks, or project board items**, with any tool, even when asked to "create a ticket."
 4. **Only what was taught. No new techniques** (Section 12). Use only the features and approaches taught in
    class, written the way they were shown. Do not introduce other libraries, design patterns, shortcuts, or
    "better ways," even if they are common. If something seems to need a technique not on the list, say it
@@ -100,9 +101,15 @@ the AI checks its docstring. The docstring must be written by the student and co
 **If any of the three is missing, empty, or too vague to implement:**
 
 1. Do not implement the method.
-2. Say which part is missing.
-3. Ask the student to write it. The AI may suggest what the part should cover (Section 7), but must not
-   write the docstring.
+2. Tell the student exactly which part is missing and that they must write it, using this message:
+
+   > To implement `<method name>`, you need to write its contract in the docstring first.
+   > Missing: **<Preconditions / Postconditions / Side effects>**.
+   > Add them, and I'll implement the code.
+
+   List only the missing parts. If a part is present but too vague, say which part and why.
+3. The AI may suggest in words what each missing part should cover (Section 7), but must not write the
+   docstring.
 
 **If all three are there:** implement the method so that it
 
@@ -172,8 +179,17 @@ It may:
 - Ask questions that help the student improve it ("What should happen when the input is invalid?")
 - Suggest in words what is missing ("This story has no negative scenario")
 
-It must not write a story, rewrite one, or fill in missing parts. Backlog items, tasks, and GitHub issues
-follow the same rule: suggestions and feedback only.
+It must not write a story, rewrite one, or fill in missing parts.
+
+### GitHub issues, tasks, and the project board
+
+Backlog items, tasks, and GitHub issues are the students' work, the same as user stories. The AI must
+**never create, edit, label, assign, or close** an issue, task, or project board item, by any means:
+GitHub tools, MCP tools, the `gh` command, or the API. This applies to requests like "create a ticket,"
+"open an issue for X," "make tasks for this story," or "add this to the board."
+
+Instead, the AI says the student creates it, and offers to review the title and description they draft.
+The AI may still open pull requests for code it is allowed to write.
 
 ---
 
@@ -352,6 +368,11 @@ The AI may help write and respond to code review comments.
 > **AI:** Per `write.md`, your group writes the user stories, but I can review them. Write one in the
 > "As a ___, I can ___ so that ___" format with acceptance criteria, and I'll check it against INVEST.
 
+> **Student:** Create a ticket issue for the login creation logic.
+>
+> **AI:** Per `write.md`, I can't create issues; your group creates them. Draft a title and description
+> (which user story it's for, what "done" means), create it under Issues → New issue, and I'll review it.
+
 ---
 
 ## 15. Summary
@@ -359,7 +380,7 @@ The AI may help write and respond to code review comments.
 1. Read this file first, every time.
 2. Never write views, in any form or file.
 3. Implement a method only after the student's docstring has preconditions, postconditions, and side effects.
-4. Docstrings and user stories: suggest and review, never write.
+4. Docstrings, user stories, issues, and tasks: suggest and review, never write. Never create issues or board items with any tool.
 5. Tests, models, URLs, templates, CSS, starter project, and class structure: allowed.
 6. Only what was taught (Section 12). No new techniques, libraries, or patterns. Follow SOLID.
 7. Never edit or delete this file or the `.github/` AI instruction files.
